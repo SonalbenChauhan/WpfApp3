@@ -1,0 +1,297 @@
+﻿<Window x:Class="WpfApp3.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp3"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="650" Width="1000" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <local:RowConverter x:Key="myConverter"/>
+        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+                               Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Courier"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0,5,0,5"/>
+                <Setter Property="FontFamily" Value="Courier"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="30"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="0,5,0,5"/>
+                <Setter Property="FontFamily" Value="Courier"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="30"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="120*"/>
+            <ColumnDefinition Width="450*"/>
+            <ColumnDefinition Width="90*"/>
+            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="152*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel  Orientation="Vertical" Grid.ColumnSpan="8">
+            <StackPanel.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlLightLightColorKey}}"/>
+            </StackPanel.Background>
+            <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5" Content="Ontario Security Guard Testing" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="10" Margin="10">
+                <Grid Visibility="Visible">
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="FontFamily" Value="Courier"/>
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Margin" Value="0,5,0,5"/>
+                            <Setter Property="FontFamily" Value="Courier"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="Margin" Value="0,5,0,5"/>
+                            <Setter Property="FontFamily" Value="Courier"/>
+                            <Setter Property="FontSize" Value="12"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="15*"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="15*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="110*"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="100*"/>
+                        <ColumnDefinition Width="110*"/>
+                        <ColumnDefinition Width="100*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="1" Grid.Column="2" Content="How many appointments?" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <TextBox x:Name="txtAppointmentCount" Grid.Row="1" Grid.Column="4" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Style="{StaticResource MyWaterMarkStyle}" Tag="[1-12]"
+                         ToolTip="{Binding ElementName=txtAppointmentCount,Path=(Validation.Errors)[0].ErrorContent}" Margin="0,5,0,0" AutomationProperties.HelpText="hi">
+                        <TextBox.Text>
+                            <Binding Path="Alpha">
+                                <Binding.ValidationRules>
+                                    <local:AppoitnmentRule MinVal="1" MaxVal="12"></local:AppoitnmentRule>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <Button x:Name="btnShowTimings" Grid.Row="1"  Grid.Column="5" HorizontalAlignment="Left" Width="100" Content="Show Timings" Click="BtnShowTimings_Click" Height="25" VerticalAlignment="Top" />
+                    <Label Grid.Row="2" Grid.Column="2" Content="Available Time Slots" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <ComboBox x:Name="cmbAppointmentTime" IsEnabled="False" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" Width="180" SelectionChanged="CmbAppointmentTime_SelectionChanged" />
+                    <Label Grid.Row="3" Grid.Column="2" Content="Available Test Locations" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <ComboBox x:Name="cmbTestLocation" IsEnabled="False" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" Width="180" Height="20" VerticalAlignment="Bottom" SelectionChanged="CmbTestLocation_SelectionChanged"  />
+                </Grid>
+            </Border>
+            <Grid x:Name="grdCustomer"  Margin="0,10,0,10">
+                <Grid.Resources>
+                    <Style TargetType="Label">
+                        <Setter Property="FontFamily" Value="Courier"/>
+                        <Setter Property="FontSize" Value="14"/>
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="0,5,0,5"/>
+                        <Setter Property="FontFamily" Value="Courier"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Height" Value="30"/>
+                    </Style>
+                    <Style TargetType="ComboBox">
+                        <Setter Property="Margin" Value="0,5,0,5"/>
+                        <Setter Property="FontFamily" Value="Courier"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Height" Value="25"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="74*"/>
+                    <ColumnDefinition Width="45*"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="90*"/>
+                    <ColumnDefinition Width="100*"/>
+                    <ColumnDefinition Width="28*"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="1" Grid.Column="2" Content="Enter candidate details here" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <Label Grid.Row="2" Grid.Column="2" Content="Candidate Type" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <ComboBox x:Name="cmbCandidateType" Grid.Row="2" Grid.Column="4" HorizontalAlignment="Left" Width="130" SelectionChanged="CmbCandidateType_SelectionChanged" Margin="0,2,0,0" VerticalAlignment="Top" />
+                <Label Grid.Row="3" Grid.Column="2" Content="Name" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox x:Name="txtName" Grid.Row="3" Grid.Column="4" HorizontalAlignment="Left" TextWrapping="Wrap" Width="130" Margin="0,5,0,0" Style="{StaticResource MyWaterMarkStyle}"  Tag="John Smith"
+                         ToolTip="{Binding ElementName=txtName,Path=(Validation.Errors)[0].ErrorContent}" Height="26">
+                    <TextBox.Text>
+                        <Binding Path="Alpha" NotifyOnValidationError="True">
+                            <Binding.ValidationRules>
+                                <local:NameRule></local:NameRule>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="4" Grid.Column="2" Content="Address" HorizontalAlignment="Left"  VerticalAlignment="Top" />
+                <TextBox x:Name="txtAddress" Grid.Row="4" Grid.Column="4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Style="{StaticResource MyWaterMarkStyle}"  Tag="199 Allen Street" Margin="0,5,0,0"
+                         ToolTip="{Binding ElementName=txtAddress,Path=(Validation.Errors)[0].ErrorContent}" Height="26">
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="5" Grid.Column="2" Content="Email" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox x:Name="txtEmail" Grid.Row="5" Grid.Column="4" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Style="{StaticResource MyWaterMarkStyle}"  Tag="johns@gmail.com" Margin="0,5,0,0"
+                         ToolTip="{Binding ElementName=txtEmail,Path=(Validation.Errors)[0].ErrorContent}" Height="26">
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                                <local:EmailRule></local:EmailRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="6" Grid.Column="2" Content="Passport" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <TextBox x:Name="txtPassport" Grid.Row="6" Grid.Column="4" HorizontalAlignment="Left" TextWrapping="Wrap" Width="130" Style="{StaticResource MyWaterMarkStyle}"  Tag="PN123456" Margin="0,5,0,0" 
+                         ToolTip="{Binding ElementName=txtPassport,Path=(Validation.Errors)[0].ErrorContent}" Height="26">
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                                <local:PassportRule></local:PassportRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="7" Grid.Column="2" Content="Credit Card" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <TextBox x:Name="txtCreditcard" Grid.Row="7" Grid.Column="4" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Width="130" Style="{StaticResource MyWaterMarkStyle}"  Tag="411111111111" Margin="0,5,0,0"
+                         ToolTip="{Binding ElementName=txtCreditcard,Path=(Validation.Errors)[0].ErrorContent}">
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                                <local:CreditcardRule></local:CreditcardRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label Grid.Row="8" Grid.Column="2" Content="Amount Paid" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <TextBox x:Name="txtAmount" Grid.Row="8" Grid.Column="4" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap"  VerticalAlignment="Top" Width="130"  Style="{StaticResource MyWaterMarkStyle}"  Tag="[0-300]"  Margin="0,5,0,0"
+                         ToolTip="{Binding ElementName=txtAmount,Path=(Validation.Errors)[0].ErrorContent}" >
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                                <local:AmountRule MinVal="0" MaxVal="300"></local:AmountRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Label x:Name="lblIndividualTask" Grid.Row="9" Grid.Column="2" Content="Is legally allowed to work?" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <ComboBox Grid.Row="9" Grid.Column="4" x:Name="cmbIndividualTask" HorizontalAlignment="Left" Width="130" />
+                <Button x:Name="btnSave" Grid.Row="11"  Grid.Column="2"  Width="310" Height="30" Grid.ColumnSpan="3" Content="Submit Application" Click="BtnSave_Click" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Button x:Name="btnReset" Grid.Row="12" Grid.Column="2" Height="30" Grid.ColumnSpan="3" Width="310" Content="Reset" Click="BtnReset_Click" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Button x:Name="btnDisplay" Grid.Row="13" Grid.ColumnSpan="4"  Grid.Column="2" Width="310" Height="30" Content="Display" Click="BtnDisplay_Click" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                <Label Grid.Row="1" Grid.Column="6" Content="Filter by candidate type" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="0,4,0,0" />
+                <ComboBox x:Name="cmbCandidateTypeSearch" Grid.Row="1" Grid.Column="7" HorizontalAlignment="Right" Width="120" SelectionChanged="CmbCandidateTypeSearch_SelectionChanged" VerticalAlignment="Top" />
+                <TextBox x:Name="txtSearch" Grid.Row="1" Grid.Column="8" HorizontalAlignment="Right" Height="25" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Style="{StaticResource MyWaterMarkStyle}"  Tag="John Smith"
+                         ToolTip="{Binding ElementName=txtSearch,Path=(Validation.Errors)[0].ErrorContent}" Margin="0,4,154,0" Grid.ColumnSpan="2">
+                    <TextBox.Text>
+                        <Binding Path="Alpha">
+                            <Binding.ValidationRules>
+                                <local:EmptyFieldRule></local:EmptyFieldRule>
+                                <local:NameRule></local:NameRule>
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </TextBox.Text>
+                </TextBox>
+                <Button x:Name="btnSearch"  Grid.Row="1" Grid.Column="9" Width="150" Content="Search by Name"  Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Click="BtnSearch_Click"/>
+                <Label Grid.Row="0" Grid.Column="6" Content="Candidate Details Display" HorizontalAlignment="Center" VerticalAlignment="Top" Grid.ColumnSpan="4" FontWeight="Bold"  />
+                <Border Grid.Row="2"  Grid.Column="6" Grid.ColumnSpan="4" Grid.RowSpan="14" BorderThickness="1" BorderBrush="Black" >
+                    <DataGrid x:Name="grdAppointment" HorizontalAlignment="Center"  VerticalAlignment="Top"  
+                  ItemsSource="{Binding Path=DisplayAppointment}" AutoGenerateColumns="False" IsReadOnly="True">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource myConverter}}" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Candidate Type" Binding="{Binding 'CandidateData.CandidateType'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Appointment Time" Binding="{Binding AppointmentTime}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Test Location" Binding="{Binding TestLocation}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding 'CandidateData.CandidateName'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Address" Binding="{Binding 'CandidateData.CandidateAddress'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding 'CandidateData.Email'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Passport" Binding="{Binding 'CandidateData.ViewPassport'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="CreditCard" Binding="{Binding 'CandidateData.ViewCreditCard'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Amount Paid" Binding="{Binding 'CandidateData.ViewAmount'}" CanUserSort="True"/>
+                            <DataGridTextColumn Header="Tasks" Binding="{Binding 'CandidateData.ViewTasks'}" CanUserSort="True"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</Window>
